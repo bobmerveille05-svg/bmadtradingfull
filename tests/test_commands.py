@@ -17,6 +17,7 @@ from bmadts.orchestrator.commands import Command, parse_command
         ("/checklist", Command.CHECKLIST),
         ("bmad-help", Command.BMAD_HELP),
         ("/party", Command.PARTY),
+        ("/verify", Command.VERIFY),
     ],
 )
 def test_parse_command_recognizes_commands(raw, expected):

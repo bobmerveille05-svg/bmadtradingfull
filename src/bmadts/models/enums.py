@@ -18,6 +18,7 @@ class GateStatus(str, Enum):
     IN_PROGRESS = "IN_PROGRESS"
     PASSED = "PASSED"
     FAILED = "FAILED"
+    UNVERIFIED = "UNVERIFIED"
 
 
 class AgentType(str, Enum):

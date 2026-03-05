@@ -23,9 +23,15 @@ htmlcov/
 .bmad-session.json
 .bmad-session.*.bak.json
 .bmad-artifacts.json
+.bmad-metrics.json
+.bmad-evidence.json
 bmad-config.json
 bmad-errors.log
 bmad-llm-log.txt
+
+# Secrets
+.env
+.env.*
 
 # Generated artifacts (often contain user strategy data)
 STRATEGY-SPEC*.md
@@ -41,6 +47,10 @@ AUDIT-TRAIL*.md
 *_MT5_v*.mq5
 *_Pine_v*.pine
 *_BMAD_v*.zip
+
+# External evidence inputs
+trades.csv
+compilation.log
 
 # Editors
 .vscode/

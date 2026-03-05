@@ -29,6 +29,7 @@ from bmadts.gates.validator import GateValidator
 from bmadts.traceability import write_traceability_map
 from bmadts.help_system import render_bmad_help
 from bmadts.party import render_party
+from bmadts.verify import render_verify_summary, verify_trades_csv
 
 
 class Orchestrator:
@@ -77,7 +78,12 @@ class Orchestrator:
         templates = TemplateManager(templates_dir)
         artifact_manager = ArtifactManager(workdir=wd, templates=templates)
         gate_validator = GateValidator(
-            wd, min_backtest_trades=config.min_backtest_trades
+            wd,
+            min_backtest_trades=config.min_backtest_trades,
+            initial_capital=config.initial_capital,
+            risk_free_rate=config.risk_free_rate,
+            monte_carlo_iterations=config.monte_carlo_iterations,
+            walk_forward_periods=config.walk_forward_periods,
         )
         audit_trail = AuditTrail(wd / "AUDIT-TRAIL.md")
 
@@ -196,6 +202,8 @@ class Orchestrator:
                 return self._logic_wizard()
             if cmd == Command.TEST_WIZARD:
                 return self._test_wizard()
+            if cmd == Command.VERIFY:
+                return self._verify_text()
             if cmd == Command.BMAD_HELP:
                 return render_bmad_help(workdir=self._workdir, state=self._state)
             if cmd == Command.PARTY:
@@ -318,13 +326,23 @@ class Orchestrator:
                 "gate": gate,
                 "status": result.status.value,
                 "pass_percentage": result.pass_percentage,
+                "verified": result.verified,
+                "failed": result.failed,
+                "unverified": result.unverified,
+                "skipped": result.skipped,
             },
         )
 
-        lines = [f"Gate {gate}: {result.status.value} ({result.pass_percentage}%)"]
+        lines = [
+            f"Gate {gate}: {result.status.value} ({result.pass_percentage}%)",
+            f"- verified: {result.verified}",
+            f"- failed: {result.failed}",
+            f"- unverified: {result.unverified}",
+            f"- skipped: {result.skipped}",
+        ]
         for r in result.criteria:
-            status = "PASS" if r.passed else "FAIL"
-            msg = "" if r.passed or not r.message else f" - {r.message}"
+            status = r.status.value.upper()
+            msg = "" if not r.message else f" - {r.message}"
             lines.append(
                 f"- [{status}] {r.criterion.id}: {r.criterion.description}{msg}"
             )
@@ -361,13 +379,13 @@ class Orchestrator:
                 f"Gate {gate_num}: {result.status.value} ({result.pass_percentage}%)"
             )
             for r in result.criteria:
-                status = "PASS" if r.passed else "FAIL"
-                msg = "" if r.passed or not r.message else f" - {r.message}"
+                status = r.status.value.upper()
+                msg = "" if not r.message else f" - {r.message}"
                 lines.append(
                     f"- [{status}] {r.criterion.id}: {r.criterion.description}{msg}"
                 )
                 total += 1
-                passed += 1 if r.passed else 0
+                passed += 1 if r.status.value == "verified" else 0
             lines.append("")
 
         overall = int(round(100 * passed / max(1, total)))
@@ -738,6 +756,26 @@ class Orchestrator:
             {"artifact": saved.name, "version": version},
         )
         return f"Generated {saved.name} ({version})"
+
+    def _verify_text(self) -> str:
+        try:
+            payload = verify_trades_csv(
+                workdir=self._workdir,
+                trades_path=Path("trades.csv"),
+                config=self._config,
+            )
+        except Exception as e:
+            raise CommandError(str(e)) from e
+
+        self._safe_audit(
+            "VERIFY",
+            "Computed deterministic metrics from trades.csv",
+            {
+                "metrics_file": str(self._workdir / ".bmad-metrics.json"),
+                "source": payload.get("source_file"),
+            },
+        )
+        return render_verify_summary(payload)
 
     def _safe_audit(
         self, entry_type: str, description: str, details: dict[str, Any] | None = None
@@ -1124,9 +1162,9 @@ def _next_step_hint(phase: Phase) -> str:
     return {
         Phase.IDLE: "Run start",
         Phase.SPEC: "Edit STRATEGY-SPEC.md (or run spec) then run gate",
-        Phase.LOGIC: "Edit LOGIC-MODEL.md (or run logic) then run gate",
-        Phase.CODE: "Add code files (*_MT4.mq4, *_MT5.mq5, *_Pine.pine) then run gate",
-        Phase.TEST: "Create TEST-REPORT.md (or run test) then run gate",
+        Phase.LOGIC: "Edit LOGIC-MODEL.md (or run logic) then run gate (Gate 2 may be UNVERIFIED until parsers/checkers exist)",
+        Phase.CODE: "Add code files then compile externally and save compilation.log, then run gate",
+        Phase.TEST: "Export trades.csv from a real backtest, run verify, then run gate",
         Phase.PROOF: "Create PROOF-CERTIFICATE.md (or run proof) then export",
         Phase.COMPLETE: "Run export",
     }[phase]

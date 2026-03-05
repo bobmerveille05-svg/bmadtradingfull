@@ -12,6 +12,7 @@ class Configuration(BaseModel):
     language: str = Field(default="en")
     llm_provider: str = Field(default="claude")
     min_backtest_trades: int = Field(default=100, ge=1)
+    initial_capital: float = Field(default=10_000.0, gt=0.0)
     risk_free_rate: float = Field(default=0.02, ge=0.0, le=1.0)
     monte_carlo_iterations: int = Field(default=1000, ge=1)
     walk_forward_periods: int = Field(default=5, ge=1)

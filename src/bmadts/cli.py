@@ -1,16 +1,29 @@
 from __future__ import annotations
 
+import os
+from pathlib import Path
+
 import typer
 
+from bmadts.disclaimer import DISCLAIMER_TEXT
 from bmadts.exceptions import BMADException
+from bmadts.models.config import Configuration
 from bmadts.orchestrator.orchestrator import Orchestrator
+from bmadts.verify import render_verify_summary, verify_trades_csv
 
 
 app = typer.Typer(add_completion=False, no_args_is_help=False)
 
 
+def _maybe_print_disclaimer() -> None:
+    if os.environ.get("BMADTS_HIDE_DISCLAIMER") == "1":
+        return
+    typer.echo(DISCLAIMER_TEXT.rstrip() + "\n", err=True)
+
+
 def _run_command(cmd: str) -> None:
     try:
+        _maybe_print_disclaimer()
         orch = Orchestrator.from_workdir()
         out = orch.execute_command(cmd)
         if out and out != "__EXIT__":
@@ -25,6 +38,7 @@ def _default(ctx: typer.Context) -> None:
     """BMAD Trading System CLI."""
 
     if ctx.invoked_subcommand is None:
+        _maybe_print_disclaimer()
         orch = Orchestrator.from_workdir()
         raise typer.Exit(code=orch.run_repl())
 
@@ -122,3 +136,23 @@ def bmad_help() -> None:
 @app.command()
 def party() -> None:
     _run_command("/party")
+
+
+@app.command()
+def verify(
+    trades: Path = typer.Option(Path("trades.csv"), "--trades"),
+) -> None:
+    """Compute metrics deterministically from trades.csv."""
+
+    _maybe_print_disclaimer()
+    workdir = Path.cwd()
+    try:
+        cfg = Configuration.load_from_file(
+            workdir / "bmad-config.json", create_if_missing=True
+        )
+        payload = verify_trades_csv(workdir=workdir, trades_path=trades, config=cfg)
+    except Exception as e:
+        typer.echo(str(e), err=True)
+        raise typer.Exit(code=1)
+
+    typer.echo(render_verify_summary(payload))

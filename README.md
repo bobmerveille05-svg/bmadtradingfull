@@ -2,6 +2,21 @@
 
 This repository contains an early implementation of the BMAD-Trading System described in `design.md` and `requirements.md`.
 
+## IMPORTANT DISCLAIMER
+
+BMAD Trading System (BTS) is a workflow + verification tool.
+
+It does NOT:
+- connect to any broker/exchange
+- execute live trades
+- run platform backtests for you
+- compile MQL4/MQL5/Pine code (unless you provide external compilation logs)
+
+Any gate result marked `UNVERIFIED` means required machine-verifiable evidence was not provided.
+Do not deploy with real capital based on `UNVERIFIED` outputs.
+
+Trading involves substantial risk of loss. Past performance (backtested or live) does not guarantee future results.
+
 ## Local dev
 
 Install deps:
@@ -31,7 +46,7 @@ python -m bmadts spec
 python -m bmadts gate
 ```
 
-Quick end-to-end (wizard-driven) workflow:
+Wizard-driven demo (artifact generation):
 
 ```bash
 python -m bmadts start
@@ -53,6 +68,12 @@ python -m bmadts gate
 
 python -m bmadts export
 ```
+
+Notes:
+- Gate 2 includes criteria that are intentionally marked `UNVERIFIED` until formal parsers/checkers are implemented.
+- Gate 3 requires an external `compilation.log` (e.g. from MetaEditor) to be considered `VERIFIED`.
+- Gate 4 requires a real `trades.csv` export to compute metrics deterministically.
+- Use `python -m bmadts verify` to compute metrics and write `.bmad-metrics.json`.
 
 ## BMAD-style module data
 

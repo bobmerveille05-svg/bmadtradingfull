@@ -20,3 +20,4 @@ bts,anytime,Checklist,CL,20,bmadts checklist,false,Show all gates and current pa
 bts,anytime,Audit,AU,30,bmadts audit,false,Show traceability map + audit trail
 bts,anytime,Party Mode,PTY,40,bmadts party,false,Show all agent personas (team view)
 bts,anytime,BMAD Help,HELP,50,bmadts bmad-help,false,Guidance and suggested next commands
+bts,TEST,Verify Trades CSV,VFY,15,bmadts verify,false,Compute metrics deterministically from trades.csv and write .bmad-metrics.json

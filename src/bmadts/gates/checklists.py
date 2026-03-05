@@ -43,12 +43,16 @@ GATE_CHECKLISTS: dict[int, list[GateCriterion]] = {
         GateCriterion("G3-06", "Artifact saved with correct filename"),
     ],
     4: [
-        GateCriterion("G4-01", "All unit tests passed"),
-        GateCriterion("G4-02", "All integration tests passed"),
-        GateCriterion("G4-03", "Backtest includes at least min trades"),
-        GateCriterion("G4-04", "All 18 backtest metrics calculated"),
-        GateCriterion("G4-05", "Walk-Forward Analysis performed"),
-        GateCriterion("G4-06", "Monte Carlo Simulation performed"),
-        GateCriterion("G4-07", "Artifact saved with correct filename"),
+        GateCriterion("G4-01", "trades.csv exists (exported from backtest platform)"),
+        GateCriterion("G4-02", "Backtest includes at least min trades"),
+        GateCriterion("G4-03", "All 18 backtest metrics computed from trades.csv"),
+        GateCriterion(
+            "G4-04", "Walk-Forward Analysis computed (>= configured periods)"
+        ),
+        GateCriterion(
+            "G4-05", "Monte Carlo Simulation computed (>= configured iterations)"
+        ),
+        GateCriterion("G4-06", "Metrics evidence file written (.bmad-metrics.json)"),
+        GateCriterion("G4-07", "Evidence registry updated (.bmad-evidence.json)"),
     ],
 }
