@@ -15,6 +15,8 @@ from bmadts.orchestrator.commands import Command, parse_command
         ("/start", Command.START),
         ("rollback", Command.ROLLBACK),
         ("/checklist", Command.CHECKLIST),
+        ("bmad-help", Command.BMAD_HELP),
+        ("/party", Command.PARTY),
     ],
 )
 def test_parse_command_recognizes_commands(raw, expected):

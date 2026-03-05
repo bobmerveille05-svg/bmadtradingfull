@@ -1,0 +1,22 @@
+module,phase,name,code,sequence,command,required,description
+bts,IDLE,Start Session,START,10,bmadts start,true,Initialize a new strategy session (moves to SPEC)
+bts,SPEC,Generate STRATEGY-SPEC (Wizard),SW,10,bmadts spec-wizard,false,Interactive questionnaire to produce STRATEGY-SPEC.md with unique Rule_IDs
+bts,SPEC,Open STRATEGY-SPEC,Spec,20,bmadts spec,true,View STRATEGY-SPEC.md (edit it if needed)
+bts,SPEC,Validate Gate 1,G1,30,bmadts gate,true,Run Gate 1 validation and transition to LOGIC if passed
+bts,LOGIC,Generate LOGIC-MODEL (Wizard),LW,10,bmadts logic-wizard,false,Create LOGIC-MODEL.md populated with Rule_IDs from STRATEGY-SPEC
+bts,LOGIC,Open LOGIC-MODEL,Logic,20,bmadts logic,true,View LOGIC-MODEL.md (edit it if needed)
+bts,LOGIC,Validate Gate 2,G2,30,bmadts gate,true,Run Gate 2 validation and transition to CODE if passed
+bts,CODE,Generate Code Skeletons (Wizard),CW,10,bmadts code-wizard,false,Generate MT4/MT5/Pine code skeletons from templates
+bts,CODE,List Code Artifacts,Code,20,bmadts code,true,List generated code files
+bts,CODE,Validate Gate 3,G3,30,bmadts gate,true,Run Gate 3 validation and transition to TEST if passed
+bts,TEST,Generate TEST-REPORT (Wizard),TW,10,bmadts test-wizard,false,Create TEST-REPORT.md with required metric placeholders
+bts,TEST,Open TEST-REPORT,Test,20,bmadts test,true,View TEST-REPORT.md (edit it if needed)
+bts,TEST,Validate Gate 4,G4,30,bmadts gate,true,Run Gate 4 validation and transition to PROOF if passed
+bts,PROOF,Open PROOF-CERTIFICATE,Proof,10,bmadts proof,true,View or create PROOF-CERTIFICATE.md
+bts,PROOF,Finalize Workflow,FIN,20,bmadts gate,true,Finalize PROOF -> COMPLETE (requires PROOF-CERTIFICATE.md)
+bts,COMPLETE,Export Package,EXP,10,bmadts export,true,Create deployment ZIP with all artifacts
+bts,anytime,Status,ST,10,bmadts status,false,Show current phase/gate/agent and next step hint
+bts,anytime,Checklist,CL,20,bmadts checklist,false,Show all gates and current pass/fail status
+bts,anytime,Audit,AU,30,bmadts audit,false,Show traceability map + audit trail
+bts,anytime,Party Mode,PTY,40,bmadts party,false,Show all agent personas (team view)
+bts,anytime,BMAD Help,HELP,50,bmadts bmad-help,false,Guidance and suggested next commands

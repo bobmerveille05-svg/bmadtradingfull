@@ -1,0 +1,12 @@
+# <!-- Powered by BMAD-CORE style bundle -->
+bundle:
+  name: Trading Strategy Team
+  icon: "📈"
+  description: "Team for SPEC/LOGIC/CODE/TEST/PROOF trading strategy workflow"
+agents:
+  - analyst
+  - quant
+  - coder
+  - tester
+  - auditor
+party: "./default-party.csv"

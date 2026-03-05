@@ -36,6 +36,7 @@ Quick end-to-end (wizard-driven) workflow:
 ```bash
 python -m bmadts start
 python -m bmadts spec-wizard
+python -m bmadts bmad-help
 python -m bmadts gate
 
 python -m bmadts logic-wizard
@@ -52,6 +53,16 @@ python -m bmadts gate
 
 python -m bmadts export
 ```
+
+## BMAD-style module data
+
+To mirror the structure of https://github.com/bmad-code-org/BMAD-METHOD, this repo also includes a declarative module layout under:
+
+- `_bmad/bts/module.yaml`
+- `_bmad/bts/module-help.csv`
+- `_bmad/bts/agents/`
+- `_bmad/bts/teams/`
+- `_bmad/bts/workflows/`
 
 In the REPL, commands are slash-prefixed (e.g. `/start`, `/status`).
 

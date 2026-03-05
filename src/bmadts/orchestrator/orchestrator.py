@@ -27,6 +27,8 @@ from bmadts.orchestrator.state_machine import StateMachine
 from bmadts.gates.checklists import GATE_CHECKLISTS
 from bmadts.gates.validator import GateValidator
 from bmadts.traceability import write_traceability_map
+from bmadts.help_system import render_bmad_help
+from bmadts.party import render_party
 
 
 class Orchestrator:
@@ -194,6 +196,10 @@ class Orchestrator:
                 return self._logic_wizard()
             if cmd == Command.TEST_WIZARD:
                 return self._test_wizard()
+            if cmd == Command.BMAD_HELP:
+                return render_bmad_help(workdir=self._workdir, state=self._state)
+            if cmd == Command.PARTY:
+                return render_party(workdir=self._workdir)
 
             return f"Not implemented yet: {cmd.value}"
         except BMADException as e:

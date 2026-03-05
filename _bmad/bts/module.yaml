@@ -1,0 +1,38 @@
+code: bts
+name: "BMAD Trading System"
+description: "Agent-based workflow for trading strategy development (SPEC -> LOGIC -> CODE -> TEST -> PROOF)"
+default_selected: true
+
+# This module file mirrors the BMAD-METHOD module style (declarative prompts + directory creation).
+# The Python CLI in this repository does not require installation, but keeping this file allows
+# future packaging as an installable BMAD-style module.
+
+project_name:
+  prompt: "What is your strategy project called?"
+  default: "{directory_name}"
+  result: "{value}"
+
+language:
+  prompt: "Preferred language?"
+  default: "en"
+  result: "{value}"
+  single-select:
+    - value: "en"
+      label: "English"
+    - value: "fr"
+      label: "Francais"
+
+llm_provider:
+  prompt: "Default LLM provider?"
+  default: "gpt"
+  result: "{value}"
+  single-select:
+    - value: "gpt"
+      label: "OpenAI"
+    - value: "claude"
+      label: "Anthropic"
+
+directories:
+  - "{project-root}/planning-artifacts"
+  - "{project-root}/implementation-artifacts"
+  - "{project-root}/docs"

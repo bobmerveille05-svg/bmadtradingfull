@@ -112,3 +112,13 @@ def logic_wizard() -> None:
 @app.command(name="test-wizard")
 def test_wizard() -> None:
     _run_command("/test-wizard")
+
+
+@app.command(name="bmad-help")
+def bmad_help() -> None:
+    _run_command("/bmad-help")
+
+
+@app.command()
+def party() -> None:
+    _run_command("/party")

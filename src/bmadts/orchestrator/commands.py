@@ -24,6 +24,8 @@ class Command(str, Enum):
     CODE_WIZARD = "/code-wizard"
     LOGIC_WIZARD = "/logic-wizard"
     TEST_WIZARD = "/test-wizard"
+    BMAD_HELP = "/bmad-help"
+    PARTY = "/party"
     HELP = "/help"
     EXIT = "/exit"
     QUIT = "/quit"
