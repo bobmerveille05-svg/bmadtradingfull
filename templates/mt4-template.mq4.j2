@@ -1,0 +1,60 @@
+// Strategy: {{ strategy_name }}
+// Version: {{ version }}
+// Generated: {{ created_at }}
+// BMAD: WIP
+
+// === Inputs ===
+// TODO: Add input parameters
+
+// === Variables ===
+// TODO: Declare variables from LOGIC-MODEL
+{% if variables %}
+{% for v in variables %}
+double {{ v }} = 0;
+{% endfor %}
+{% else %}
+// Example variable (remove if not used)
+double foo = 0;
+{% endif %}
+
+// === Initialization ===
+int OnInit()
+{
+    return(INIT_SUCCEEDED);
+}
+
+void OnDeinit(const int reason)
+{
+}
+
+void OnTick()
+{
+    // === Main_Logic ===
+    // TODO: Implement signal evaluation and order management
+    // Basic error handling placeholder: check return codes and log errors.
+}
+
+// === Entry_Functions ===
+{% if rule_ids %}
+{% for rid in rule_ids %}
+// Rule_ID: {{ rid }} - TODO
+bool entry_{{ rid|replace('-', '_') }}()
+{
+    return false;
+}
+
+{% endfor %}
+{% else %}
+// Rule_ID: R-000 - TODO
+bool entry_rule_example()
+{
+    return false;
+}
+
+{% endif %}
+
+// === Exit_Functions ===
+// TODO: Implement exits
+
+// === Risk_Management ===
+// TODO: Position sizing, SL/TP, limits

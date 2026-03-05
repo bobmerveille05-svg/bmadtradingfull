@@ -1,0 +1,43 @@
+//@version=5
+strategy("{{ strategy_name }}", overlay=true)
+
+// Version: {{ version }}
+// Generated: {{ created_at }}
+
+// === Inputs ===
+// TODO
+
+// === Variables ===
+{% if variables %}
+{% for v in variables %}
+{{ v }} = 0.0
+{% endfor %}
+{% else %}
+foo = 0.0
+{% endif %}
+
+// === Initialization ===
+// (Pine initializes on script load)
+
+// === Main_Logic ===
+// TODO
+// error handling placeholder
+
+// === Entry_Functions ===
+{% if rule_ids %}
+{% for rid in rule_ids %}
+// Rule_ID: {{ rid }} - TODO
+// TODO
+
+{% endfor %}
+{% else %}
+// Rule_ID: R-000 - TODO
+// TODO
+
+{% endif %}
+
+// === Exit_Functions ===
+// TODO
+
+// === Risk_Management ===
+// TODO

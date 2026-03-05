@@ -1,0 +1,47 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+.venv/
+venv/
+
+# Tooling
+.pytest_cache/
+.hypothesis/
+.coverage
+htmlcov/
+.ruff_cache/
+
+# BMAD runtime files
+.bmad-session.json
+.bmad-session.*.bak.json
+.bmad-artifacts.json
+bmad-config.json
+bmad-errors.log
+bmad-llm-log.txt
+
+# Generated artifacts (often contain user strategy data)
+STRATEGY-SPEC*.md
+LOGIC-MODEL*.md
+TEST-REPORT*.md
+PROOF-CERTIFICATE*.md
+TRACEABILITY-MAP*.md
+AUDIT-TRAIL*.md
+*_MT4.mq4
+*_MT5.mq5
+*_Pine.pine
+*_MT4_v*.mq4
+*_MT5_v*.mq5
+*_Pine_v*.pine
+*_BMAD_v*.zip
+
+# Editors
+.vscode/
+.idea/
